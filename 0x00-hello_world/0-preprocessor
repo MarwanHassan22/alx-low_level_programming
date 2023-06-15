@@ -1,6 +1,2 @@
 #!/bin/bash
-# Save C file name in variable
 CFILE=main.c
-
-# Run C file through preprocessor and save output to file 'c'
-cpp $CFILE > c
