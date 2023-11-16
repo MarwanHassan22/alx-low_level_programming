@@ -20,7 +20,9 @@ int _pow_recursion(int x, int y)
     /* Recursively call with the same base and the next exponent */
     if (y > 0)
         return x * _pow_recursion(x, y - 1);
+    if (y < 0)
+	    return -1;
     else  /* Handle negative exponent */
-        return 1.0 / (x * _pow_recursion(x, -y - 1));
+        return -1 / (x * _pow_recursion(x, -y - 1));
 }
 
