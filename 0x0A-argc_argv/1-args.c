@@ -1,4 +1,4 @@
-#include "main.h"
+#include <stdio.h>
 
 /**
  * main - Entry point
@@ -8,6 +8,10 @@
  * Return: Always 0 (Success)
  */
 int main(int argc, char *argv[]) {
+    if (argc > 1 && strcmp(argv[1], "-Wall") == 0) {
+        #pragma GCC diagnostic error "-Wall"
+    }
+
     printf("%d\n", argc - 1);
 
     return 0;
