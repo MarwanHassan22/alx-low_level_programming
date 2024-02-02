@@ -1,102 +1,112 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
- * _putchar - Writes a character to stdout
- * @c: The character to print
+ * multiply - Multiplies two numbers represented as strings.
+ * @num1: The first number.
+ * @num2: The second number.
  *
- * Return: The number of characters printed
+ * Return: A pointer to the result of the multiplication.
  */
-int _putchar(char c)
-{
-    return write(1, &c, 1);
-}
+char *multiply(char *num1, char *num2);
 
 /**
- * _puts - Prints a string to stdout
- * @str: The string to print
+ * _strlen - Calculates the length of a string.
+ * @str: The input string.
+ *
+ * Return: The length of the string.
  */
-void _puts(char *str)
+int _strlen(char *str);
+
+/**
+ * main - Entry point of the program.
+ * @argc: The number of command-line arguments.
+ * @argv: An array of strings representing the arguments.
+ *
+ * Return: 0 on success, 98 on incorrect number of arguments or invalid input.
+ */
+int main(int argc, char *argv[])
 {
-    while (*str)
+    char *result;
+
+    if (argc != 3)
     {
-        _putchar(*str);
-        str++;
+        printf("Error\n");
+        return (98);
     }
-}
 
-/**
- * multiply - Multiplies two numbers represented as strings
- * @num1: The first number
- * @num2: The second number
- */
-void multiply(char *num1, char *num2)
-{
-    int len1 = 0, len2 = 0, i, j;
-    int *result, carry = 0, sum, result_size;
-
-    while (num1[len1])
-        len1++;
-
-    while (num2[len2])
-        len2++;
-
-    result_size = len1 + len2;
-    result = malloc(sizeof(int) * result_size);
-
+    result = multiply(argv[1], argv[2]);
     if (result == NULL)
     {
-        _puts("Error\n");
-        exit(98);
+        printf("Error\n");
+        return (98);
     }
 
-    for (i = 0; i < result_size; i++)
-        result[i] = 0;
+    printf("%s\n", result);
+    free(result);
+
+    return 0;
+}
+
+/**
+ * multiply - Multiplies two numbers represented as strings.
+ * @num1: The first number.
+ * @num2: The second number.
+ *
+ * Return: A pointer to the result of the multiplication.
+ */
+char *multiply(char *num1, char *num2)
+{
+    int len1 = _strlen(num1);
+    int len2 = _strlen(num2);
+    int len_result = len1 + len2;
+    int *result;
+    int i, j, product, carry = 0;
+
+    result = calloc(len_result + 1, sizeof(int));
+    if (result == NULL)
+        return (NULL);
+
+    int final_result_len = len_result + 1;
+    char *final_result = malloc(final_result_len);
+    if (final_result == NULL)
+    {
+        free(result);
+        return (NULL);
+    }
 
     for (i = len1 - 1; i >= 0; i--)
     {
         carry = 0;
-
         for (j = len2 - 1; j >= 0; j--)
         {
-            sum = (num1[i] - '0') * (num2[j] - '0') + result[i + j + 1] + carry;
-            carry = sum / 10;
-            result[i + j + 1] = sum % 10;
+            product = (num1[i] - '0') * (num2[j] - '0') + result[i + j + 1] + carry;
+            carry = product / 10;
+            result[i + j + 1] = product % 10;
         }
-
         result[i + j + 1] = carry;
     }
 
-    for (i = 0; i < result_size - 1; i++)
-    {
-        if (result[i] != 0)
-            break;
-    }
+    for (i = 0; i < len_result; i++)
+        final_result[i] = result[i] + '0';
 
-    for (; i < result_size; i++)
-        _putchar(result[i] + '0');
-
-    _putchar('\n');
+    final_result[len_result] = '\0';
 
     free(result);
+    return (final_result);
 }
 
 /**
- * main - Entry point of the program
- * @argc: The number of command-line arguments
- * @argv: An array containing the command-line arguments
+ * _strlen - Calculates the length of a string.
+ * @str: The input string.
  *
- * Return: 0 on success, 98 on error
+ * Return: The length of the string.
  */
-int main(int argc, char *argv[])
+int _strlen(char *str)
 {
-    if (argc != 3)
-    {
-        _puts("Error\n");
-        return 98;
-    }
-
-    multiply(argv[1], argv[2]);
-
-    return 0;
+    int len = 0;
+    while (str[len] != '\0')
+        len++;
+    return len;
 }
 
