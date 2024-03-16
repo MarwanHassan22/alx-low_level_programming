@@ -1,1 +1,1 @@
-this is my readme
+this is about python programming language
